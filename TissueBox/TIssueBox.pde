@@ -22,12 +22,14 @@ boolean recorded;
 // for playing back
 AudioOutput out;
 
+Mixer.Info[] mixerInfo;
+
 // for timer
-Timer downTimer = new Timer(4000);
+Timer downTimer = new Timer(30000);
 
 String AudioLayer1;
 String initialSound = "groove.mp3";
-String newAudio;
+String newAudio = "groove.mp3";
 
 
 
@@ -39,8 +41,13 @@ void setup(){
   
   // use the getLineIn method of the Minim object to get an AudioInput
   in = minim.getLineIn(Minim.STEREO); // use the getLineIn method of the Minim object to get an AudioInput
-  
-  
+  in.setGain(30); // set input recording gain
+
+  mixerInfo = AudioSystem.getMixerInfo();
+  printArray(mixerInfo);
+  Mixer mixer = AudioSystem.getMixer(mixerInfo[3]);// choose correspond sound output
+  //minim.setOutputMixer(mixer);
+
   // loadFile will look in all the same places as loadImage does.
   // this means you can find files that are in the data folder and the 
   // sketch folder. you can also pass an absolute path, or a URL.
@@ -52,8 +59,8 @@ void setup(){
   recorder = minim.createRecorder(in, "test-recording.wav");
 
   textFont(createFont("Arial", 12));
-
-  String portName = Serial.list()[1];
+  printArray(Serial.list());
+  String portName = Serial.list()[1];// choose correspond port number
   myPort = new Serial(this, portName, 115200);
 
 }

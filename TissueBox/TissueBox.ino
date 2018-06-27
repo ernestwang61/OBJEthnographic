@@ -7,9 +7,9 @@
 #include <FirebaseArduino.h>
 #define firebaseURL "objethnographic.firebaseio.com" //
 #define authCode "gLixyhZ0JcJmuaNzs2N7VjPAT9ORMMxxhag4q94C" //資料庫密鑰
-String chipID = "tissue" ; //(資料庫第一層)控制的物件名稱
-String child_1 = "play" ; //子變數名稱
-String child_2 = "record" ;
+String chipID = "CO2_Sensor" ; //(資料庫第一層)控制的物件名稱
+String child_1 = "situation" ; //子變數名稱
+String child_2 = "switch" ;
 String data = "data" ; //上傳的資料
 
 bool DEBUG = false;
@@ -61,7 +61,9 @@ void PullData(){
 
 //firenase Push funciton
 void PushData (){
-  Firebase.setString ( chipID + "/time", data );
+  Firebase.setBool ( chipID + "/switch",  record_state);
+  if(DEBUG)
+    Serial.println("record_state == false");
   // String name = Firebase.push("001", on);
   //   Firebase.push("temperature", temperatureObject);
   // handle error
@@ -77,17 +79,18 @@ void setup() {
   Serial.begin(115200);
   setupWifi();
   setupFirebase();
+
 }
 
 
 int flip_play;
 int flip_record;
 int flip_save;
+bool flip_timer = false;
+int timer;
 void loop() {
   PullData();
   // Serial.println("get!");
-  PushData();
-  // Serial.println("push!");
   
   int playTrigger = 1;
   int recordTrigger = 3;
@@ -119,6 +122,20 @@ void loop() {
     if(flip_record == 0){
       Serial.write(recordTrigger);
       flip_record = 1;
+    }
+    //timer
+    unsigned long temp = millis();
+    if(flip_timer == false){
+        timer = temp;
+        if(DEBUG)
+          Serial.println("timer reseted");
+        flip_timer = true;
+    }
+    if(temp - timer > 30000){
+      timer = temp;
+      flip_timer = false;
+      record_state = false;
+      PushData();
     }
 
     flip_save = 0;
