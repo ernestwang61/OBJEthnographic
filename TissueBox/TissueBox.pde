@@ -4,6 +4,7 @@
 import processing.serial.*;
 import ddf.minim.*;
 import ddf.minim.ugens.*;
+import javax.sound.sampled.*;
 
 Serial myPort;
 
