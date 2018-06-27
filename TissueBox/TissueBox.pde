@@ -63,7 +63,7 @@ void setup(){
 
   textFont(createFont("Arial", 12));
   printArray(Serial.list());
-  String portName = Serial.list()[1];// choose correspond port number
+  String portName = Serial.list()[2];// choose correspond port number
   myPort = new Serial(this, portName, 115200);
 
 }
