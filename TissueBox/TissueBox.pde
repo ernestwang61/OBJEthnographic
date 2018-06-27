@@ -42,7 +42,7 @@ void setup(){
   
   // use the getLineIn method of the Minim object to get an AudioInput
   in = minim.getLineIn(Minim.STEREO); // use the getLineIn method of the Minim object to get an AudioInput
-  in.setGain(30); // set input recording gain
+  in.setGain(80); // set input recording gain
 
   mixerInfo = AudioSystem.getMixerInfo();
   printArray(mixerInfo);
