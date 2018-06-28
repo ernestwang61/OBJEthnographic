@@ -41,18 +41,13 @@ void setup(){
   minim = new Minim(this);
   
   // use the getLineIn method of the Minim object to get an AudioInput
-<<<<<<< HEAD
-  // in = minim.getLineIn(Minim.STEREO); // use the getLineIn method of the Minim object to get an AudioInput
-  // in.setGain(500); // set input recording gain
-=======
   in = minim.getLineIn(Minim.STEREO); // use the getLineIn method of the Minim object to get an AudioInput
   in.setGain(30); // set input recording gain
->>>>>>> parent of 0b92747... Merge branch 'master' of https://github.com/ernestwang61/OBJEthnographic
 
   mixerInfo = AudioSystem.getMixerInfo();
   printArray(mixerInfo);
-  Mixer mixer = AudioSystem.getMixer(mixerInfo[0]);// choose correspond sound output
-  minim.setOutputMixer(mixer);
+  Mixer mixer = AudioSystem.getMixer(mixerInfo[3]);// choose correspond sound output
+  //minim.setOutputMixer(mixer);
 
   // loadFile will look in all the same places as loadImage does.
   // this means you can find files that are in the data folder and the 
@@ -281,10 +276,6 @@ void keyReleased(){
       rh = h;
       rm = m;
       // println(recordCount);
-      
-      in = minim.getLineIn(Minim.STEREO); // use the getLineIn method of the Minim object to get an AudioInput
-      in.setGain(80);
-
       recorder = minim.createRecorder(in, "recording" + Y + M + D + "_" + h + "_" + m + ".wav");
       recorder.beginRecord();
       break;
