@@ -51,7 +51,7 @@ void setup(){
 
   mixerInfo = AudioSystem.getMixerInfo();
   printArray(mixerInfo);
-  Mixer mixer = AudioSystem.getMixer(mixerInfo[3]);// choose correspond sound output
+  Mixer mixer = AudioSystem.getMixer(mixerInfo[0]);// choose correspond sound output
   minim.setOutputMixer(mixer);
 
   // loadFile will look in all the same places as loadImage does.
