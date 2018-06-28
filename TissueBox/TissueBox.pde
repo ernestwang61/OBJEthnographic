@@ -148,7 +148,8 @@ void setSTATE(){
   //   keyReleased();
   //   preIncome = 4;
   // }
-  if(serialIncome == preIncome)
+  //if(serialIncome == preIncome)
+  if(false)  
     return;
   else{
     switch(serialIncome){
