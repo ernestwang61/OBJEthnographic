@@ -41,8 +41,13 @@ void setup(){
   minim = new Minim(this);
   
   // use the getLineIn method of the Minim object to get an AudioInput
+<<<<<<< HEAD
   // in = minim.getLineIn(Minim.STEREO); // use the getLineIn method of the Minim object to get an AudioInput
   // in.setGain(500); // set input recording gain
+=======
+  in = minim.getLineIn(Minim.STEREO); // use the getLineIn method of the Minim object to get an AudioInput
+  in.setGain(30); // set input recording gain
+>>>>>>> parent of 0b92747... Merge branch 'master' of https://github.com/ernestwang61/OBJEthnographic
 
   mixerInfo = AudioSystem.getMixerInfo();
   printArray(mixerInfo);
@@ -53,7 +58,7 @@ void setup(){
   // this means you can find files that are in the data folder and the 
   // sketch folder. you can also pass an absolute path, or a URL.
   out = minim.getLineOut( Minim.STEREO );
-  out.setGain(80);
+  out.setGain(50);
 
   player = new FilePlayer( minim.loadFileStream( initialSound ));
   player.patch(out);
