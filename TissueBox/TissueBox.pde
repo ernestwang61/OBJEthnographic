@@ -42,7 +42,7 @@ void setup(){
   
   // use the getLineIn method of the Minim object to get an AudioInput
   in = minim.getLineIn(Minim.STEREO); // use the getLineIn method of the Minim object to get an AudioInput
-  in.setGain(30); // set input recording gain
+  in.setGain(80); // set input recording gain
 
   mixerInfo = AudioSystem.getMixerInfo();
   printArray(mixerInfo);
@@ -53,7 +53,7 @@ void setup(){
   // this means you can find files that are in the data folder and the 
   // sketch folder. you can also pass an absolute path, or a URL.
   out = minim.getLineOut( Minim.STEREO );
-  out.setGain(50);
+  out.setGain(80);
 
   player = new FilePlayer( minim.loadFileStream( initialSound ));
   player.patch(out);
