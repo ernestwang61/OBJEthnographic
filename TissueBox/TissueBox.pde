@@ -41,8 +41,8 @@ void setup(){
   minim = new Minim(this);
   
   // use the getLineIn method of the Minim object to get an AudioInput
-  in = minim.getLineIn(Minim.STEREO); // use the getLineIn method of the Minim object to get an AudioInput
-  in.setGain(500); // set input recording gain
+  // in = minim.getLineIn(Minim.STEREO); // use the getLineIn method of the Minim object to get an AudioInput
+  // in.setGain(500); // set input recording gain
 
   mixerInfo = AudioSystem.getMixerInfo();
   printArray(mixerInfo);
@@ -276,6 +276,10 @@ void keyReleased(){
       rh = h;
       rm = m;
       // println(recordCount);
+      
+      in = minim.getLineIn(Minim.STEREO); // use the getLineIn method of the Minim object to get an AudioInput
+      in.setGain(80);
+
       recorder = minim.createRecorder(in, "recording" + Y + M + D + "_" + h + "_" + m + ".wav");
       recorder.beginRecord();
       break;
