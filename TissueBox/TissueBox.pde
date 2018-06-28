@@ -42,12 +42,12 @@ void setup(){
   
   // use the getLineIn method of the Minim object to get an AudioInput
   in = minim.getLineIn(Minim.STEREO); // use the getLineIn method of the Minim object to get an AudioInput
-  in.setGain(80); // set input recording gain
+  in.setGain(500); // set input recording gain
 
   mixerInfo = AudioSystem.getMixerInfo();
   printArray(mixerInfo);
   Mixer mixer = AudioSystem.getMixer(mixerInfo[3]);// choose correspond sound output
-  //minim.setOutputMixer(mixer);
+  minim.setOutputMixer(mixer);
 
   // loadFile will look in all the same places as loadImage does.
   // this means you can find files that are in the data folder and the 
