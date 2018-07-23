@@ -32,6 +32,12 @@ String AudioLayer1;
 String initialSound = "groove.mp3";
 String newAudio = "groove.mp3";
 
+String[] recordName = new String[100]; 
+//[TODO] try StringList: https://processing.org/reference/StringList.html
+// or expand(): https://processing.org/reference/expand_.html
+
+
+
 
 
 void setup(){
@@ -63,7 +69,7 @@ void setup(){
 
   textFont(createFont("Arial", 12));
   printArray(Serial.list());
-  String portName = Serial.list()[2];// choose correspond port number
+  String portName = Serial.list()[0];// choose correspond port number
   myPort = new Serial(this, portName, 115200);
 
 }
@@ -155,7 +161,7 @@ void setSTATE(){
     switch(serialIncome){
       case 3:
 
-        println("start recording");
+        println("receive record command");
 
         key = 'r';
         keyReleased();
@@ -169,7 +175,7 @@ void setSTATE(){
 
       case 4:
 
-        println("recording has been saved");
+        println("receive save command");
 
         key = 's';
         keyReleased();
@@ -179,7 +185,7 @@ void setSTATE(){
         break;
 
       case 1:
-        println("start playing");
+        println("receive play command");
 
         key = 'p';
         keyReleased();
@@ -264,6 +270,7 @@ int rm = 0;
 void keyReleased(){
   switch(key){
     case 'r':
+      println("start recording");
       int Y = year();
       int M = month();
       int D = day();
@@ -276,8 +283,12 @@ void keyReleased(){
       rh = h;
       rm = m;
       // println(recordCount);
-      recorder = minim.createRecorder(in, "recording" + Y + M + D + "_" + h + "_" + m + ".wav");
+      
+      recordName[recordCount] = "recording" + rY + rM + rD + "_" + rh + "_" + rm + ".wav";
+
+      recorder = minim.createRecorder(in, recordName[recordCount]);
       recorder.beginRecord();
+
       break;
 
     case 's':
@@ -291,14 +302,17 @@ void keyReleased(){
       // save returns the recorded audio in an AudioRecordingStream, 
       // which we can then play with a FilePlayer
       if ( recorder.isRecording() ){
+        println("recording has been saved");
         recorder.endRecord();
         recorder.save();
-        newAudio = "recording" + rY + rM + rD + "_" + rh + "_" + rm + ".wav";
-        // recordCount++;
+        // newAudio = "recording" + rY + rM + rD + "_" + rh + "_" + rm + ".wav";
+        newAudio = recordName[recordCount];
+        recordCount++;
       }
       break;
 
     case 'p':
+      println("start playing");
       AudioLayer1 = newAudio;
       loadSoundFile();
       player.play();
