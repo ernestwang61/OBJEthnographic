@@ -16,6 +16,7 @@ bool DEBUG = false;
 
 bool play_state = false;
 bool record_state = false;
+int recordTime;
 
 //Wifi 連接 function
 void setupWifi(){
@@ -52,24 +53,32 @@ void PullData(){
   FirebaseObject object = Firebase.get(path);
   play_state = object.getBool(child_1);
   record_state = object.getBool(child_2);
-  // Serial.print(child_1+" = ");
-  // Serial.println(play_state);
-  // Serial.print(child_2+" = ");
-  // Serial.println(record_state);
+  recordTime = 1000 * object.getInt("recordTime");
+  if(DEBUG){
+    Serial.print(child_1+" = ");
+    Serial.println(play_state);
+    Serial.print(child_2+" = ");
+    Serial.println(record_state);
+    Serial.print("recordTime = ");
+    Serial.println(recordTime);
+  }
   delay(500);
 }
 
 //firenase Push funciton
-void PushData (){
-  Firebase.setBool ( chipID + "/switch",  record_state);
+void PushData (String ID, String subID, bool value){
+  // Firebase.setBool ( chipID + "/switch",  record_state);
+  Firebase.setBool ( ID + subID, value);
   if(DEBUG)
     Serial.println("record_state == false");
   // String name = Firebase.push("001", on);
   //   Firebase.push("temperature", temperatureObject);
   // handle error
   if (Firebase.failed()) {
-      // Serial.print("pushing true failed:");
-      // Serial.println(Firebase.error());  
+      if(DEBUG){
+        Serial.print("pushing true failed:");
+        Serial.println(Firebase.error());  
+      }
       return;
    }
   delay(500);
@@ -87,7 +96,9 @@ int flip_play;
 int flip_record;
 int flip_save;
 bool flip_timer = false;
+bool flip_timer_p = false;
 int timer;
+int timer_p;
 void loop() {
   PullData();
   // Serial.println("get!");
@@ -131,11 +142,11 @@ void loop() {
           Serial.println("timer reseted");
         flip_timer = true;
     }
-    if(temp - timer > 30000){
+    if(temp - timer > recordTime){
       timer = temp;
       flip_timer = false;
       record_state = false;
-      PushData();
+      PushData(chipID, "/switch", record_state);
     }
 
     flip_save = 0;
