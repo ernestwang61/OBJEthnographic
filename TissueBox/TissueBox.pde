@@ -26,7 +26,7 @@ AudioOutput out;
 Mixer.Info[] mixerInfo;
 
 // for timer
-Timer downTimer = new Timer(30000);
+Timer downTimer = new Timer(90*1000);
 
 String AudioLayer1;
 String initialSound = "groove.mp3";
@@ -168,7 +168,6 @@ void setSTATE(){
 
         preIncome = 3;
 
-        downTimer.start();
 
         break;
 
@@ -288,6 +287,8 @@ void keyReleased(){
 
       recorder = minim.createRecorder(in, recordName[recordCount]);
       recorder.beginRecord();
+
+      downTimer.start();
 
       break;
 
