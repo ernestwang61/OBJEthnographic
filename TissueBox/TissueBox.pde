@@ -36,6 +36,7 @@ String[] recordName = new String[100];
 //[TODO] try StringList: https://processing.org/reference/StringList.html
 // or expand(): https://processing.org/reference/expand_.html
 
+String[] preRecordList = {"HEBE_my_love.mp3", "Sodagreen.mp3", "The_Fray.mp3"};
 
 
 
@@ -314,7 +315,13 @@ void keyReleased(){
 
     case 'p':
       println("start playing");
-      AudioLayer1 = newAudio;
+      int random_choice = int(random(2));
+      print("random_choice = ");
+      println(random_choice);
+      if(random_choice == 0 && recordCount > 0)
+        AudioLayer1 = recordName[int(random(recordCount))];
+      else 
+        AudioLayer1 = preRecordList[int(random(preRecordList.length))];
       loadSoundFile();
       player.play();
       break;
