@@ -36,7 +36,9 @@ String[] recordName = new String[100];
 //[TODO] try StringList: https://processing.org/reference/StringList.html
 // or expand(): https://processing.org/reference/expand_.html
 
+int recordCount;
 String[] preRecordList = {"HEBE_my_love.mp3", "Sodagreen.mp3", "The_Fray.mp3"};
+JSONArray RecordList;
 
 
 
@@ -72,6 +74,13 @@ void setup(){
   printArray(Serial.list());
   String portName = Serial.list()[0];// choose correspond port number
   myPort = new Serial(this, portName, 115200);
+
+  RecordList = loadJSONArray("recordList.json");
+  recordCount = RecordList.size();
+  print("recordCount = ");
+  println(recordCount);
+
+
 
 }
 
@@ -261,12 +270,13 @@ void setSTATE(){
 //   }
 // }
   
-int recordCount = 0;
 int rY = 0;
 int rM = 0;
 int rD = 0;
 int rh = 0;
 int rm = 0;
+String recordTitle;
+JSONObject newRecording;
 void keyReleased(){
   switch(key){
     case 'r':
@@ -282,11 +292,19 @@ void keyReleased(){
       rD = D;
       rh = h;
       rm = m;
-      // println(recordCount);
       
-      recordName[recordCount] = "recording" + rY + rM + rD + "_" + rh + "_" + rm + ".wav";
+      recordTitle= "recording" + rY + rM + rD + "_" + rh + "_" + rm + ".wav";
 
-      recorder = minim.createRecorder(in, recordName[recordCount]);
+      newRecording = new JSONObject();
+      
+      int i = RecordList.size();
+      newRecording.setInt("id", i);
+      newRecording.setString("type", "in-field");
+      newRecording.setString("file title", recordTitle);
+      RecordList.setJSONObject(i, newRecording);
+      saveJSONArray(RecordList, "data/recordList.json");
+
+      recorder = minim.createRecorder(in, recordTitle);
       recorder.beginRecord();
 
       downTimer.start();
@@ -307,21 +325,21 @@ void keyReleased(){
         println("recording has been saved");
         recorder.endRecord();
         recorder.save();
-        // newAudio = "recording" + rY + rM + rD + "_" + rh + "_" + rm + ".wav";
-        newAudio = recordName[recordCount];
         recordCount++;
       }
       break;
 
     case 'p':
-      println("start playing");
-      int random_choice = int(random(2));
-      print("random_choice = ");
-      println(random_choice);
-      if(random_choice == 0 && recordCount > 0)
-        AudioLayer1 = recordName[int(random(recordCount))];
-      else 
-        AudioLayer1 = preRecordList[int(random(preRecordList.length))];
+      
+      int random_i = int(random(RecordList.size()));
+      JSONObject recording = RecordList.getJSONObject(random_i);
+      int id = recording.getInt("id");
+      String type = recording.getString("type");
+      String file_title = recording.getString("file title"); 
+      AudioLayer1 = file_title;
+
+      println("start playing id:" + id + ", type:" + type + ", file_title:" + file_title);
+
       loadSoundFile();
       player.play();
       break;
