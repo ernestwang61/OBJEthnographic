@@ -26,11 +26,11 @@ AudioOutput out;
 Mixer.Info[] mixerInfo;
 
 // for timer
-Timer downTimer = new Timer(90*1000);
+Timer downTimer = new Timer(150*1000);
 
 String AudioLayer1;
-String initialSound = "groove.mp3";
-String newAudio = "groove.mp3";
+String initialSound = "Tweeter.wav";
+String newAudio = "Tweeter.wav";
 
 String[] recordName = new String[100]; 
 //[TODO] try StringList: https://processing.org/reference/StringList.html
@@ -330,12 +330,22 @@ void keyReleased(){
       break;
 
     case 'p':
+      int preRecordNum = 5;
+      int random_i;
+      int random_choice = int(random(2)); //first randomly choose between preRecortding/inField-recording
+      print("random_choice =");
+      println(random_choice);
+      //then randomly choose files within the category to play
+      if(random_choice == 0 || RecordList.size() == preRecordNum)
+        random_i = int(random(0, preRecordNum));
+      else
+        random_i = int(random(preRecordNum, RecordList.size()));
       
-      int random_i = int(random(RecordList.size()));
       JSONObject recording = RecordList.getJSONObject(random_i);
       int id = recording.getInt("id");
       String type = recording.getString("type");
       String file_title = recording.getString("file title"); 
+      
       AudioLayer1 = file_title;
 
       println("start playing id:" + id + ", type:" + type + ", file_title:" + file_title);
