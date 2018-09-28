@@ -332,7 +332,7 @@ void keyReleased(){
     case 'p':
       int preRecordNum = 5;
       int random_i;
-      int random_choice = int(random(3)); //first randomly choose between preRecortding/inField-recording
+      int random_choice = int(random(2)); //first randomly choose between preRecortding/inField-recording
       print("random_choice =");
       println(random_choice);
       //then randomly choose files within the category to play
